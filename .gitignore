@@ -5,6 +5,3 @@ __pycache__
 *.sqlite3
 media
 *.zip
-static/admin
-twitter/management
-twitter/static
