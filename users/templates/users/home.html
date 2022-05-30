@@ -4,5 +4,8 @@
 
 {% block content %}
 	<h1>Home</h1>
-	<p>Welcome to your Home, Here you'll see the tweets from the accounts you follow.</p>
+	<p>Welcome to your Home, Here you'll see the tweets from the accounts you follow.
+		You can <a href="{% url "users:edit" %}">edit your profile</a> or <a href="{% url "users:password_change" %}">change your password</a>.
+	</p>
+	
 {% endblock content %}

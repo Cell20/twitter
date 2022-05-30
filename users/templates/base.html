@@ -11,13 +11,13 @@
 </head>
 
 <body>
-	<div id="header"><span class="logo">Twitter</span>
+	<div id="header"><span class="logo"><a href="{% url "users:home" %}">Twitter</a></span>
 
 		{% if request.user.is_authenticated %}
 		<ul class="menu">
-			<li {% if section == "home" %}class="selected" {% endif %}>Home</li>
-			<li {% if section == "explore" %}class="selected" {% endif %}>Explore</li>
-			<li {% if section == "notifications" %}class="selected" {% endif %}>Notis</li>
+			<li {% if section == "home" %}class="selected" {% endif %}><a href="{% url "users:home" %}">Twitter</a></li>
+			<li {% if section == "explore" %}class="selected" {% endif %}><a href="#">Explore</a></li>
+			<li {% if section == "notifications" %}class="selected" {% endif %}><a href="#">Notis</a></li>
 		</ul>
 		{% endif %}
 
@@ -31,6 +31,18 @@
 		</span>
 
 	</div>
+	
+	{% if messages %}
+		<ul class="messages">
+			{% for message in messages %}
+				<li class="{{ message.tags }}">
+					{{ message|safe }}
+					<a href="#" class="close">x</a>
+				</li>
+			{% endfor %}
+		</ul>
+	{% endif %}
+		
 	<div id="content">{% block content %}{% endblock content %}</div>
 </body>
 </html>
