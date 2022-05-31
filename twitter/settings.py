@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     # Third party Apps
     'django_extensions',
     'faker',
+    'social_django',
 ]
 
 MIDDLEWARE = [
