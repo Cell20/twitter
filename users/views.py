@@ -33,7 +33,7 @@ def user_login(request):
         form = LoginForm()
 
     context = {'form': form}
-    return render(request, 'account/login.html', context)
+    return render(request, 'users/login.html', context)
 
 
 def register(request):
