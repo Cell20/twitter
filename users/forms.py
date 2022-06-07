@@ -19,7 +19,24 @@ class UserRegistrationForm(forms.ModelForm):
 
 class LoginForm(forms.Form):
     username = forms.CharField()
-    password = forms.CharField(widget=forms.PasswordInput)
+    password = forms.CharField()
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs.update({'placeholder': 'special'})
+        self.fields['password'].widget.attrs.update(size='40')    
+        # widget= forms.TextInput(attrs=
+        # {
+        #     'class':'loginform',
+        #     'id':'loginform',
+        #     'placeholder':"Password"
+        # })
+    # )
+    
+    # widget= forms.PasswordInput(attrs={'placeholder':"Phone, email, or username"})
+
+    # widget=forms.TextInput(attrs={'placeholder':'Phone, email, or username'})
+
 
 class UserEditForm(forms.ModelForm):
     class Meta:

@@ -31,11 +31,32 @@ class Command(BaseCommand):
                 password=config("PASSWORD"),
             )
 
-        # for _ in range(5):
-        user = fake.unique.first_name()
-        user = User.objects.create(
-            username=user, password=config("PASSWORD"), first_name=user, last_name=fake.last_name(), email=user+'@gmail.com')
-        
-        Profile.objects.create(user=user, date_of_birth=fake.date(), photo='/media/avatar.png')
+        for _ in range(5):
+            user = fake.unique.first_name()
+            user = User.objects.create(
+                username=user, password=config("PASSWORD"), first_name=user, last_name=fake.last_name(), email=user+'@gmail.com')
+            
+            Profile.objects.create(user=user, date_of_birth=fake.date(), photo='/media/avatar.png')
 
-# Create tweets
+            # Create tweets
+            Tweet.objects.create(user=user, body=fake.sentence())
+            users = User.objects.all()
+
+
+
+
+        # Liking the Tweet
+        # add_like = random.sample(
+        #     list(users), random.randint(1, users.count()))
+        # for im in Image.objects.all():
+        #     for like in add_like:
+        #         im.users_like.add(User.objects.get(id=like.id))
+
+        # Though the above commands can create a Image cuz most fields
+        # aren't required but u need to give everyfield value properly to cuz
+        # you're in py shell which wasn't the case in UI
+
+        # Follow each other
+        # for _ in users:
+            # Contact.objects.create(user_from=User.objects.get(id=random.randint(
+                # 1, users.count())), user_to=User.objects.get(id=random.randint(1, users.count())))

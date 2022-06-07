@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock title %}
+
+{% block content %}
+	{% comment %} <h1>Home</h1> {% endcomment %}
+	{% comment %} <p>Welcome to your Home, Here you'll see the tweets from the accounts you follow. You can <a href="{% url "users:edit" %}">edit your profile</a> or <a href="{% url "users:password_change" %}">change your password</a>.</p> {% endcomment %}
+	
+	<div class="feed">
+		<div class="feed__header">
+			<h2>Home</h2>
+		</div>
+	</div>
+
+	<div class="tweetBox">
+		{% include "content/tweet/tweet_create.html" %}
+
+	</div>
+{% endblock content %}

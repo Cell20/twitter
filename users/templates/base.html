@@ -1,48 +1,162 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="{% static "css/base.css" %}">
+	<script type="text/javascript" src="{% static "js/script.js" %}"></script>    
+	<link href="{% static "css/style.css" %}" rel="stylesheet">
+	<link rel="icon" href="{% static 'images/twt.png' %}">
+	<link rel="stylesheet" href="{% static "offlinecdn/bootstrap.min.css" %}">
+	<link rel="stylesheet" href="{% static "offlinecdn/fonts.css" %}">
+	<link rel="stylesheet" href="{% static "offlinecdn/all.min.css" %}">
 	<title>{% block title %}{% endblock title %}</title>
-</head>
-
-<body>
-	<div id="header"><span class="logo"><a href="{% url "users:home" %}">Twitter</a></span>
-
-		{% if request.user.is_authenticated %}
-		<ul class="menu">
-			<li {% if section == "home" %}class="selected" {% endif %}><a href="{% url "users:home" %}">Twitter</a></li>
-			<li {% if section == "explore" %}class="selected" {% endif %}><a href="#">Explore</a></li>
-			<li {% if section == "notifications" %}class="selected" {% endif %}><a href="#">Notis</a></li>
-		</ul>
-		{% endif %}
-
-		<span class="user">
-			{% if request.user.is_authenticated %}
-				Hello {{ request.user.username }}
-				<a href="{% url "users:logout" %}">Log out</a>
-			{% else %}
-				<a href="{% url "users:login" %}">Log in</a>
-			{% endif %}
-		</span>
-
-	</div>
 	
-	{% if messages %}
-		<ul class="messages">
-			{% for message in messages %}
-				<li class="{{ message.tags }}">
-					{{ message|safe }}
-					<a href="#" class="close">x</a>
-				</li>
-			{% endfor %}
-		</ul>
-	{% endif %}
+	{% comment %} <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous"/> {% endcomment %}
+
+</head>
+<body style="background-color: rgb(0, 0, 0);">
+
+	{% comment %} <div class="sidebar">
+		<a href="{% url "users:home" %}">
+			<i class="fab fa-twitter"></i>
+		</a>
 		
-	<div id="content">{% block content %}{% endblock content %}</div>
+			<div class="sidebarOption active">
+				<a href="{% url "users:home" %}">
+					<span class="material-icons">Home</span>
+				</a>
+			</div>
+
+	
+		{% if user.is_authenticated %}
+				<div class="sidebarOption">
+					<a href="#">
+						<span class="material-icons">perm_identity</span>
+						<h2>{{ user.username }}</h2>
+					</a>
+				</div>
+		{% endif %}
+		
+		
+		{% if user.is_authenticated %}
+			<div class="sidearOption">
+				<a href="#">
+					<span class="material-icons-outlined">People</span>
+					<h2>Following</h2>
+				</a>
+			</div>
+			
+			<div class="sidebarOption">
+				<a href="{% url "users:logout" %}">
+					<span class="material-icons">logout</span>
+					<h2>Log Out</h2>
+				</a>
+			</div>
+		{% else %}
+			<div class="sidebarOption">
+				<a href="{% url "users:login" %}">
+					<span class="material-icons">login</span>
+					<h2>Log In</h2>
+				</a>
+			</div>
+
+			<div class="sidebarOption">
+				<a href="{% url "users:register" %}">
+					<span class="material-icons">app_registration</span>
+					<h2>Register</h2>
+				</a>
+			</div>
+		{% endif %}
+	</div>
+	 {% endcomment %}
+	<div class="body">
+		{% block content %}{% endblock content %}
+	</div>
+
+
+	<!-- widgets starts -->
+	{% comment %} <div class="widgets">
+		<div class="widgets__input">
+				<span class="material-icons widgets__searchIcon"> search </span>
+				<input type="text" placeholder="Search Twitter" />
+		</div> {% endcomment %}
+
+		{% comment %}
+		<div class="widgets__widgetContainer">
+				<h2>What's happening?</h2>
+				<blockquote class="twitter-tweet">
+						<p lang="en" dir="ltr">
+						Sunsets don&#39;t get much better than this one over
+						<a href="https://twitter.com/GrandTetonNPS?ref_src=twsrc%5Etfw">@GrandTetonNPS</a>.
+						<a href="https://twitter.com/hashtag/nature?src=hash&amp;ref_src=twsrc%5Etfw">#nature</a>
+						<a href="https://twitter.com/hashtag/sunset?src=hash&amp;ref_src=twsrc%5Etfw">#sunset</a>
+						<a href="http://t.co/YuKy2rcjyU">pic.twitter.com/YuKy2rcjyU</a>
+						</p>
+						&mdash; US Department of the Interior (@Interior)
+						<a href="https://twitter.com/Interior/status/463440424141459456?ref_src=twsrc%5Etfw">May 5, 2014</a>
+				</blockquote>
+				<script type="text/javascript" async src="{% static 'offlinecdn/widgets.js' %}" charset="utf-8"></script>
+				 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
+
+		</div>
+		{% endcomment %}
+	</div>	
 </body>
 </html>
+
+
+
+{% comment %} {% load static %}<!--
+	<!DOCTYPE html>
+	<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="{% static "css/base.css" %}">
+		<title>{% block title %}{% endblock title %}</title>
+	</head>
+
+	<body>
+		<div id="header"><span class="logo"><a href="{% url "users:home" %}">Twitter</a></span>
+
+			{% if request.user.is_authenticated %}
+			<ul class="menu">
+				<li {% if section == "home" %}class="selected" {% endif %}><a href="{% url "users:home" %}">Twitter</a></li>
+				<li {% if section == "explore" %}class="selected" {% endif %}><a href="#">Explore</a></li>
+				<li {% if section == "notifications" %}class="selected" {% endif %}><a href="#">Notis</a></li>
+			</ul>
+			{% endif %}
+
+			<span class="user">
+				{% if request.user.is_authenticated %}
+					Hello {{ request.user.username }}
+					<a href="{% url "users:logout" %}">Log out</a>
+				{% else %}
+					<a href="{% url "users:login" %}">Log in</a>
+				{% endif %}
+			</span>
+
+		</div>
+		
+		{% if messages %}
+			<ul class="messages">
+				{% for message in messages %}
+					<li class="{{ message.tags }}">
+						{{ message|safe }}
+						<a href="#" class="close">x</a>
+					</li>
+				{% endfor %}
+			</ul>
+		{% endif %}
+			
+		<div id="content">{% block content %}{% endblock content %}</div>
+	</body>
+	</html>
+--> {% endcomment %}
+

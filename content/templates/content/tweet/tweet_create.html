@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+	<form id="tweetform">
+		<div class="tweetbox__input"><img src="#">
+			{{ tweet_form.as_p }}
+			{% csrf_token %}
+		</div>
+		<button id="submit" class="tweetBox__tweetButton">Tweet</button>
+	</form>
+{% endif %}
+
+{% endblock content %}

@@ -6,6 +6,8 @@ from .fields import OrderField
 from django.utils import timezone
 import math
 from django.contrib.humanize.templatetags import humanize
+import calendar
+from django.conf import settings
 
 # Module            Tweet 1 (main tweet of the thread)
 #   Content 1           Tweet 2
@@ -18,8 +20,10 @@ class Tweet(models.Model):
     """realted name allows as user.tweets"""
     user = models.ForeignKey(User, related_name="tweets", on_delete=models.DO_NOTHING)
     body = models.CharField(max_length=200)
-    image = models.ImageField(upload_to=f'{user.username}/data/tweet_media/', blank=True, null=True)
+    image = models.ImageField(upload_to=f'data/tweet_media/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    users_like = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='tweets_liked', blank=True)
+    
 
     def __str__(self):
         now = timezone.now()
@@ -30,7 +34,7 @@ class Tweet(models.Model):
             seconds= diff.seconds
             
             if seconds == 1:
-                return f"@{self.user.username} {str(seconds)} second ago\n{self.body}\n{self.image}"
+                return f"@{self.user.username} {str(seconds)}second\n{self.body}\n{self.image}"
             
             else:
                 return f"@{self.user.username} {str(seconds)} seconds ago\n{self.body}\n{self.image}"
@@ -88,72 +92,36 @@ class Tweet(models.Model):
                 return f"@{self.user.username} {str(years)} years ago\n{self.body}\n{self.image}"
 
 
-
     def whenpublished(self):
         now = timezone.now()
+
+        n = self.created_at.date().month
         
-        diff= now - self.created_at
+        tweet_day = self.created_at.date().day
+        tweet_month = calendar.month_name[n][:3]
+        tweet_year = self.created_at.date().year 
+
+        diff = now - self.created_at
 
         if diff.days == 0 and diff.seconds >= 0 and diff.seconds < 60:
             seconds= diff.seconds
-            
-            if seconds == 1:
-                return f"{str(seconds)} + second ago"
-            
-            else:
-                return str(seconds) + " seconds ago"
-
-            
+            return f"{str(seconds)}s"            
 
         if diff.days == 0 and diff.seconds >= 60 and diff.seconds < 3600:
             minutes= math.floor(diff.seconds/60)
-
-            if minutes == 1:
-                return str(minutes) + " minute ago"
-            
-            else:
-                return str(minutes) + " minutes ago"
-
+            return str(minutes) + "m"
 
 
         if diff.days == 0 and diff.seconds >= 3600 and diff.seconds < 86400:
             hours= math.floor(diff.seconds/3600)
-
-            if hours == 1:
-                return str(hours) + " hour ago"
-
-            else:
-                return str(hours) + " hours ago"
+            return str(hours) + "h"
 
         # 1 day to 30 days
-        if diff.days >= 1 and diff.days < 30:
-            days= diff.days
-        
-            if days == 1:
-                return str(days) + " day ago"
-
-            else:
-                return str(days) + " days ago"
-
-        if diff.days >= 30 and diff.days < 365:
-            months= math.floor(diff.days/30)
-            
-
-            if months == 1:
-                return str(months) + " month ago"
-
-            else:
-                return str(months) + " months ago"
-
+        if diff.days >= 1 and diff.days < 365:
+            return f"{tweet_day} {tweet_month}"
 
         if diff.days >= 365:
-            years= math.floor(diff.days/365)
-
-            if years == 1:
-                return str(years) + " year ago"
-
-            else:
-                return str(years) + " years ago"
+            return f"{tweet_day} {tweet_month} {tweet_year}"
 
 
 

@@ -1,25 +1,39 @@
 {% extends "base.html" %}
+{% load static %}
 
-{% block title %}Log-in{% endblock title %}
+{% block title %}Twitter{% endblock title %}
 
 {% block content %}
-	<h1>Log-in</h1>
-	
-	{% if form.errors %}
-		<p>Your useername and password didn't match. Please try again.</p>
-	{% else %}
-		<p>Please, use the following form to log-in. Don't have an 
-			account? <a href="{% url "users:register" %}">register here</a></p>
-	{% endif %}
+	<div class="text-center form-signin m-auto" style="color: #71767B">
+		<div class="login-template">
 
-	<div class="login-form">
-		<form method="post">
-			{{ form.as_p }}
-			{% csrf_token %}
-			<input type="hidden" name="next" value="{{ next }}"/>
-			<p><input type="submit" value="Log-in"></p>
+			<img class="mb-4" src="{% static 'svg/twitter-blue.svg' %}" alt="" width="30" height="30">
+			<h1 class="h3 mb-3 mt-4 fw-bold sign px-5">Sign in to Twitter</h1>
+
+			<p class="text-dark background-white mt-5 px-5"><a class="btn btn-light rounded-pill px-5">
+			<img class="px-0 py-0" src="{% static 'svg/google.svg' %}" alt="" width="25" height="25">
+					Sign in with Google</a></p>
+			<p class="text-dark background-white mt-4 px-5"><a class="btn btn-light rounded-pill px-5">
+			<img class="px-0 py-0" src="{% static 'svg/github.svg' %}" alt="" width="25" height="25">
+					Sign in with Github</a></p>
+
+				<p class="or my-4">or</p>
+
+			<form method="post" class="my-4">
+
+				<div class="form-floating">
+					{% csrf_token %}
+					{{ form.as_p }}
+				</div>
+				<p class="btn btn-light rounded-pill px-5 mt-4">
+					<input type="submit" class="btn btn-light rounded-pill px-5 py-0" value="Sign in"/>
+				</p>
+
 		</form>
-		<p><a href="{% url "users:password_reset" %}">Forgotten your password?</a></p>
+		</div>		
+		<p class="login-password px-5 py-1"><a class="btn btn-outline-dark rounded-pill px-5 py-2" href="{% url "users:password_reset" %}">Forgot password?</a></p>
+	
+			<p class="no-acc">Don't have an account? <a style="color: #1d9bf0" href="{% url "users:register" %}">Sign up</a></p>
 	</div>
-		
+
 {% endblock content %}

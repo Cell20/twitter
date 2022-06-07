@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
 from .forms import LoginForm, UserRegistrationForm, UserEditForm, ProfileEditForm
@@ -7,11 +7,10 @@ from django.contrib.auth.decorators import login_required
 from .models import Profile
 from django.contrib import messages
 
-
 @login_required
 def home(request):
     """home page displaying tweets from those you follow."""
-    return render(request, 'users/home.html', {'section': 'home'})
+    return render(request, 'users/index.html', {'section': 'home'})
 
 def user_login(request):
     if request.method == 'POST':
@@ -51,6 +50,15 @@ def register(request):
     else:
         user_form = UserRegistrationForm()
     return render(request, 'users/register.html', {'user_form': user_form})
+
+
+def user_list(request):
+    users = User.objects.filter(is_active=True)
+    return render(request, 'users/list.html', {'users': users})
+
+def user_detail(request, username):
+    user = get_object_or_404(User, username=username, is_active=True)
+    return render(request, 'users/detail.html', {'section': 'home', 'user': user})
 
 
 @login_required

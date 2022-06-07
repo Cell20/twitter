@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ user.get_full_name }}{% endblock title %}
+
+{% block content %}
+<div class="user-info">
+	<img src="{% if user.profile.photo %}{{ user.profile.photo }}{% else %}{% static "images/default.png" %}{% endif %}">
+</div>
+	{{ user.get_full_name }}
+	@{{ user.username }}
+
+	<div class="content">
+		
+		{% for tweet in user.tweets.all %}
+		<hr>
+			<div class="box">
+				{{user.get_full_name}} @{{ user.username }}
+				<span class="is-small has-text-grey-light">
+					{{ tweet.whenpublished }}
+				</span>
+				<br>
+				{{ tweet.body }}
+			</div>
+
+			{% with total_followers=user.followers.count %}
+				<span class="count">
+					<span class="total">{{ total_followers }}</span>follower{{ total_followers|pluralize }}
+				</span>
+
+				<a href="#" data-id="{{ user.id }}" data-action="{% if request.user in user.followers.all %}un{% endif %}follow" class="follow button">	
+					{% if request.user not in user.followers.all %}
+						Follow
+					{% else %}
+						Unfollow
+					{% endif %}	
+				</a>
+
+				{% comment %} <div id="tweet-list" class="tweet-container">{% include "users/list_ajax.html" with tweet=user.tweets.all %}</div> {% endcomment %}
+			{% endwith %}
+		{% endfor %}
+			
+	</div>
+{% endblock content %}
+
+{% comment %} {% block domready %}
+	$('a.follow').click(function(e){
+		e.preventDefault();
+		$.post('{% url  %}')
+	})
+{% endblock domready %} {% endcomment %}
