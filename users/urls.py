@@ -1,6 +1,7 @@
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from . import views
+from content import views as cv
 from django.urls import reverse_lazy
 
 app_name = 'users'
@@ -8,6 +9,7 @@ app_name = 'users'
 urlpatterns = [
     path('', views.home, name='home'),
     path('followers/', views.user_list, name='user_list'),
+    path('users/follow/', views.user_follow, name='user_follow'),
     # post views
     # path('login/', views.user_login, name='login'),
 
@@ -29,7 +31,9 @@ urlpatterns = [
 
     # user home page when he can see all his tweets
     # there should be a link to edit profile too on template.
+    path('users/', views.user_list, name='user_list'),
     path('<username>/', views.user_detail, name='user_detail'),
     # profile edit
     path('edit/', views.edit, name='edit'),
+
 ]

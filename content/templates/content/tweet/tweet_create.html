@@ -1,15 +1,48 @@
-{% extends 'base.html' %}
 
-{% block content %}
+{% load static %}
+	<img style="position: relative; top: 36px; left: -75px;" height="50px" width="50px" class="my-3 img-fluid rounded-circle" src="{% if user.profile.photo %}{{ user.profile.photo.url }}{% else %}{% static "images/default.png" %}{% endif %}">
+	<style>
+    input[id='id_image'] {
+			height: 20px;
+			width: 20px;
+			border: 2px solid blue;
+			background: black;
+		}
+		#id_body {
+			color: white;
+			background: black;
+			border: none;
+			font-size: 150%;
+			overflow: hidden;
+		}
 
-{% if user.is_authenticated %}
-	<form id="tweetform">
-		<div class="tweetbox__input"><img src="#">
-			{{ tweet_form.as_p }}
+		@media screen and (min-width: 1200px) {
+			form {
+				position: absolute;
+				top: 14%;
+			}
+		}
+		@media screen and (min-width: 800px) {
+			form {
+				position: absolute;
+				top: 9%;
+			}
+		}
+
+	</style>
+	<form id="index-tweet-form" method="post" enctype="multipart/form-data">
+		<div class="form-floating" >
 			{% csrf_token %}
+			{{ form.as_p }}
 		</div>
-		<button id="submit" class="tweetBox__tweetButton">Tweet</button>
+		<input type="submit" id="button" class="index-twt-btn btn btn-primary rounded-pill px-3" value="Tweet" disabled>
 	</form>
-{% endif %}
 
-{% endblock content %}
+	<script>
+		document.getElementById("id_image").title = 'image'
+		document.getElementById("id_body").title = ''
+		if (window.history.replaceState) {
+				window.history.replaceState(null, null, window.location.href);
+		}
+
+	</script>

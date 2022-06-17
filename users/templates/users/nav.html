@@ -1,0 +1,13 @@
+{% load static %}
+				<img class="my-3 mx-3" width="30px" height="30px" src="{% static 'svg/twitter-blue.svg' %}" alt="">
+				<div class="nav list-group-flush align-items-center">
+					<a class="list-group-item list-group-item-action align-items-center text-white bg-black lead {% if section == "home" %}selected{% endif %}" href="{% url 'users:home' %}"><i class="fas fa-light fa-home">X</i> Home</a>
+					<a class="list-group-item list-group-item-action align-items-center text-white bg-black lead {% if section == "explore" %}selected{% endif %}" href=""><i class="fas fa-lg fa-border-padding fa-light fa-hashtag">X</i> Explore</a>
+					<a class="list-group-item list-group-item-action align-items-center text-white bg-black lead {% if section == "notifications" %}selected{% endif %}" href=""><i class="fas fa-lg fa-border-padding fa-light fa-bell">X</i> Notifications<span class="ml-3 badge badge-primary badge-pill">3<X/span></a>
+					<a class="list-group-item list-group-item-action align-items-center text-white bg-black lead {% if section == "messages" %}selected{% endif %}" href=""><i class="fas fa-lg fa-border-padding fa-light fa-envelope">X</i> Messages</a>
+					<a class="list-group-item list-group-item-action align-items-center text-white bg-black lead {% if section == "bookmarks" %}selected{% endif %}" href=""><i class="fas fa-lg fa-border-padding fa-light fa-bookmark">X</i> Bookmarks</a>
+					<a class="list-group-item list-group-item-action align-items-center text-white bg-black lead {% if section == "lists" %}selected{% endif %}" href=""><i class="fas fa-lg fa-border-padding fa-list">X</i> Lists</a>
+					<a class="list-group-item list-group-item-action align-items-center text-white bg-black lead {% if section == "profile" %}selected{% endif %}" href="{{ user.get_absolute_url }}"><i class="fas fa-lg fa-border-padding fa-solid fa-user">X</i> Profile</a>
+					<a class="list-group-item list-group-item-action align-items-center text-white bg-black lead {% if section == "more" %}selected{% endif %}" href=""><i class="fas fa-lg fa-border-padding fa-more">X</i> More</a>
+				</div>
+					

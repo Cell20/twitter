@@ -3,17 +3,36 @@
 {% block title %}Home{% endblock title %}
 
 {% block content %}
-	{% comment %} <h1>Home</h1> {% endcomment %}
-	{% comment %} <p>Welcome to your Home, Here you'll see the tweets from the accounts you follow. You can <a href="{% url "users:edit" %}">edit your profile</a> or <a href="{% url "users:password_change" %}">change your password</a>.</p> {% endcomment %}
-	
-	<div class="feed">
-		<div class="feed__header">
-			<h2>Home</h2>
-		</div>
-	</div>
 
+<div class="row" id="central-top" style="border-bottom: 1px solid grey;">
+	<h5 class="text-white font-weight-bolder mx-3">Home</h5><br>
 	<div class="tweetBox">
 		{% include "content/tweet/tweet_create.html" %}
-
 	</div>
+</div>
+
 {% endblock content %}
+
+{% block domready %}
+	$('#id_body').on('input', function() {
+		this.style.height = 'auto';
+		this.style.height = (this.scrollHeight) + 'px';
+	});
+	// disabled
+	var button = document.getElementById("button");
+	var textarea = document.getElementById("id_body");
+	button.style.cursor = "default";
+	$(button).prop('disabled', true);
+
+	textarea.addEventListener('keyup', function() {
+		// alert(button.disabled + ' ' + this)
+		button.disabled = !this.value; 
+	// btn is disabled LHS=true; user types in RHS=true; btn.disabled value is set to not true/ !true/ or false;
+			if(!this.value){
+				$("#button").css("cursor", "default");
+			} else if (this.value) {
+				$("#button").css("cursor", "pointer");
+			}
+		
+	});
+{% endblock domready %}

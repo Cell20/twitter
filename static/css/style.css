@@ -1,3 +1,59 @@
+:root {
+  --blue: #1e90ff;
+  --primary: white;
+  --secondary: black;
+  --dark: #2c2f3175;
+  --light: rgb(231, 233, 234);
+  --fa-primary-color: white;
+}
+
+.bg-black {
+  background-color: var(--secondary);
+}
+@media screen and (min-width: 500px) {
+  #central-top {
+    height: 79%;
+  }
+}
+@media screen and (min-width: 768px) {
+  #central-top {
+    height: 23%;
+  }
+}
+@media screen and (min-width: 1200px) {
+  #central-top {
+    height: 33%;
+  }
+} /*style="border-bottom: 1px solid grey; height: 33%;"*/
+
+.bg-black:hover {
+  background-color: var(--dark);
+}
+/* .disabled {
+  cursor: default !important;
+} */
+.index-twt-btn {
+  position: relative;
+  bottom: -34px;
+  right: -379px;
+}
+
+.selected {
+  font-weight: 1000px;
+  color: var(--primary);
+}
+
+.fa-home,
+.fa-hashtag,
+.fa-bell,
+.fa-envelope,
+.fa-bookmark,
+.fa-list,
+.fa-profile,
+.fa-more {
+  color: var(--primary);
+}
+
 /* .form-signin {
   font-weight: 700;
 } */
@@ -10,5 +66,7 @@
 }
 
 .sign {
-  color: rgb(231, 233, 234);
+  color: var(--light);
 }
+
+

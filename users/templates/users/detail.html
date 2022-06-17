@@ -1,50 +1,99 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}{{ user.get_full_name }}{% endblock title %}
+{% load content_tags %}
+{% block title %}{{ user.get_full_name }} (@{{ user.username }}) / Twitter{% endblock title %}
 
 {% block content %}
-<div class="user-info">
-	<img src="{% if user.profile.photo %}{{ user.profile.photo }}{% else %}{% static "images/default.png" %}{% endif %}">
-</div>
-	{{ user.get_full_name }}
-	@{{ user.username }}
+<div class="text-white px-5 mx-5">
+	<div class="user-info">
+		<img height="150px" width="150px" class="my-3 img-fluid rounded-circle" src="{% if user.profile.photo %}{{ user.profile.photo.url }}{% else %}{% static "images/default.png" %}{% endif %}"><br>
+		<span class="mt-3">{{ user.get_full_name }}</span><br>
+		<span class="text-dark mt-0">@{{ user.username }}</span>
 
-	<div class="content">
-		
-		{% for tweet in user.tweets.all %}
-		<hr>
-			<div class="box">
-				{{user.get_full_name}} @{{ user.username }}
-				<span class="is-small has-text-grey-light">
-					{{ tweet.whenpublished }}
-				</span>
-				<br>
-				{{ tweet.body }}
-			</div>
-
-			{% with total_followers=user.followers.count %}
-				<span class="count">
-					<span class="total">{{ total_followers }}</span>follower{{ total_followers|pluralize }}
-				</span>
-
-				<a href="#" data-id="{{ user.id }}" data-action="{% if request.user in user.followers.all %}un{% endif %}follow" class="follow button">	
+				<a class="ml-5 btn btn-light rounded-pill follow button" href="#" data-id="{{ user.id }}" data-action="{% if request.user in user.followers.all %}un{% endif %}follow">	
 					{% if request.user not in user.followers.all %}
 						Follow
 					{% else %}
-						Unfollow
-					{% endif %}	
+						Following
+					{% endif %}
 				</a>
+
+		<p class="bio">{{ user.profile.bio }}</p>
+		<p>
+			<span class="text-dark">
+			<img class="px-0 bg-light" src="{% static 'svg/location.svg' %}" width="20" height="20">
+			{{ user.profile.location }}</span>
+			<a href="{{ user.profile.website }}" class="mr-3">
+			<img class="px-0 ml-3 bg-light" src="{% static 'svg/link.svg' %}" width="20" height="20">
+			{{ user.profile.website }}</a><br>
+			<span class="text-dark"><img class="px-0 py-0 bg-light" src="{% static 'svg/birthday.svg' %}" width="20" height="20" alt="">Born {{ user.profile.date_of_birth.month|get_month }} {{ user.profile.date_of_birth.day }}, {{ user.profile.date_of_birth.year }}</span>
+			<span class="date-joined ml-3 text-dark">
+				<img class="px-0 py-0 bg-light" src="{% static 'svg/calendar.svg' %}" width="20" height="20">
+				Joined {{ user.date_joined.month|get_month }} {{ user.date_joined.year }}</span>
+		</p>
+
+		<p class="text-dark fw-bold">Not followed by anyone you're following</p>
+	</div>	
+		<div class="content">
+			
+			{% with total_followers=user.followers.count total_following=user.following.count %}
+				<span class="count">
+					<a class="mr-3 text-dark fw-bold" href="#">
+						<span class="total text-white">{{ total_following }}</span> following</a>
+					<a class="mr-3 text-dark fw-bold" href="#">
+						<span class="total text-white">{{ total_followers }}</span> followers</a>
+				</span>
 
 				{% comment %} <div id="tweet-list" class="tweet-container">{% include "users/list_ajax.html" with tweet=user.tweets.all %}</div> {% endcomment %}
 			{% endwith %}
-		{% endfor %}
+
+			{% for tweet in user.tweets.all|latest %}
+			<hr>
+				<div class="box">
+					{{user.get_full_name}} <span class="text-dark">@{{ user.username }}</span>
+					<span class="text-dark">
+						{{ tweet.whenpublished }}
+					</span>
+					<br><a class="text-white text-decoration-none" href="{{ tweet.get_absolute_url }}">{{ tweet.body }}</a>
+					
+				</div>
+				<hr>
+			{% endfor %}
 			
 	</div>
 {% endblock content %}
 
-{% comment %} {% block domready %}
+{% block domready %}
+	console.log("jquery loaded");
+
 	$('a.follow').click(function(e){
 		e.preventDefault();
-		$.post('{% url  %}')
-	})
-{% endblock domready %} {% endcomment %}
+		$.post('{% url "users:user_follow" %}',
+			{
+				id: $(this).data('id'),
+				action: $(this).data('action')
+			},
+			function(data){
+				if (data['status'] == 'ok') {
+					var previous_action = $('a.follow').data('action');
+
+					// toggle data-action
+					$('a.follow').data('action', previous_action=='follow' ? 'unfollow': 'follow');
+					// toggle link text
+					$('a.follow').text(previous_action=='follow' ? 'Following' : 'Follow');
+
+					// revolute button color
+					$("a.follow").toggleClass('btn-dark');
+
+
+					// update total Followers
+					var previous_followers = parseInt(
+						$('span.count .total').text());
+					$('span.count .total').text(previous_action == 'follow' ?
+					previous_followers + 1 : previous_followers -1);
+				}
+			}
+		);
+	});
+
+{% endblock domready %}

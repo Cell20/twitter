@@ -31,17 +31,23 @@ class Command(BaseCommand):
                 password=config("PASSWORD"),
             )
 
-        for _ in range(5):
-            user = fake.unique.first_name()
-            user = User.objects.create(
-                username=user, password=config("PASSWORD"), first_name=user, last_name=fake.last_name(), email=user+'@gmail.com')
+        # for _ in range(5):
+        #     user = fake.unique.first_name()
+        #     user = User.objects.create(
+        #         username=user, password=config("PASSWORD"), first_name=user, last_name=fake.last_name(), email=user+'@gmail.com')
             
-            Profile.objects.create(user=user, date_of_birth=fake.date(), photo='/media/avatar.png')
+        #     Profile.objects.create(user=user, date_of_birth=fake.date(), photo='/media/avatar.png')
 
-            # Create tweets
-            Tweet.objects.create(user=user, body=fake.sentence())
-            users = User.objects.all()
+        #     # Create tweets
+        #     Tweet.objects.create(user=user, body=fake.sentence())
+        profiles = Profile.objects.all()
+    
 
+        for profile in profiles:
+            profile.bio = fake.text(max_nb_chars=100)
+            profile.location = f'{fake.state()}, USA'
+            profile.website = fake.url()
+            profile.save()
 
 
 

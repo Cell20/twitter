@@ -49,7 +49,7 @@ class ProfileEditForm(forms.ModelForm):
         
         # sale_date = forms.DateField(widget=forms.DateInput(format='%M%d%Y'),input_formats=['%M%d%Y'], label=('Date of birth:'))
 
-        fields = ('date_of_birth', 'photo')
+        fields = ('bio', 'location', 'website', 'date_of_birth', 'photo')
 
 
 # class CouponApplyForm(forms.Form):

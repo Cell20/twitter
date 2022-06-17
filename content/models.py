@@ -1,13 +1,14 @@
-from django.db import models
-from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
-from django.contrib.auth.models import User
-from .fields import OrderField
-from django.utils import timezone
-import math
+from django.contrib.contenttypes.models import ContentType
 from django.contrib.humanize.templatetags import humanize
-import calendar
+from django.contrib.auth.models import User
+from django.urls import reverse
+from django.utils import timezone
 from django.conf import settings
+from .fields import OrderField
+from django.db import models
+import calendar
+import math
 
 # Module            Tweet 1 (main tweet of the thread)
 #   Content 1           Tweet 2
@@ -17,13 +18,12 @@ from django.conf import settings
 # add image plus other options on Tweet model set required no or blank false
 
 class Tweet(models.Model):
-    """realted name allows as user.tweets"""
+    """related name allows as user.tweets"""
     user = models.ForeignKey(User, related_name="tweets", on_delete=models.DO_NOTHING)
     body = models.CharField(max_length=200)
     image = models.ImageField(upload_to=f'data/tweet_media/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     users_like = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='tweets_liked', blank=True)
-    
 
     def __str__(self):
         now = timezone.now()
@@ -124,9 +124,9 @@ class Tweet(models.Model):
             return f"{tweet_day} {tweet_month} {tweet_year}"
 
 
-
-
-
+    def get_absolute_url(self):
+        return reverse("content:tweet_detail", args=[self.user.username, self.id])
+    
 
 '''
 class Content(models.Model):

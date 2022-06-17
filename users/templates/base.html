@@ -5,12 +5,11 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<script type="text/javascript" src="{% static "js/script.js" %}"></script>    
-	<link href="{% static "css/style.css" %}" rel="stylesheet">
-	<link rel="icon" href="{% static 'images/twt.png' %}">
+	<link rel="icon" href="{% static 'svg/twitter-blue.svg' %}">
 	<link rel="stylesheet" href="{% static "offlinecdn/bootstrap.min.css" %}">
 	<link rel="stylesheet" href="{% static "offlinecdn/fonts.css" %}">
 	<link rel="stylesheet" href="{% static "offlinecdn/all.min.css" %}">
+	<link href="{% static "css/style.css" %}" rel="stylesheet">
 	<title>{% block title %}{% endblock title %}</title>
 	
 	{% comment %} <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -20,143 +19,57 @@
 </head>
 <body style="background-color: rgb(0, 0, 0);">
 
-	{% comment %} <div class="sidebar">
-		<a href="{% url "users:home" %}">
-			<i class="fab fa-twitter"></i>
-		</a>
-		
-			<div class="sidebarOption active">
-				<a href="{% url "users:home" %}">
-					<span class="material-icons">Home</span>
-				</a>
-			</div>
-
-	
-		{% if user.is_authenticated %}
-				<div class="sidebarOption">
-					<a href="#">
-						<span class="material-icons">perm_identity</span>
-						<h2>{{ user.username }}</h2>
-					</a>
+		<div class="container-fluid">
+			<div class="row">
+				{% comment %} phone < 500 < tablet < 1005 < laptop < 1282 < monitor
+				1200
+				3, 5, 4   col-sm-9 col-md-6 col-lg-8 col-xl-10
+				sm  < 500 <   md   < 1005 <   lg   < 1282 <   xl {% endcomment %}
+				{% if user.is_authenticated %}
+				<div class="px-3 col-sm-0 col-md-1 col-lg-1 col-xl-3 text-left flex-xl-shrink-1">
+					{% include "users/nav.html" %}
 				</div>
-		{% endif %}
-		
-		
-		{% if user.is_authenticated %}
-			<div class="sidearOption">
-				<a href="#">
-					<span class="material-icons-outlined">People</span>
-					<h2>Following</h2>
-				</a>
-			</div>
-			
-			<div class="sidebarOption">
-				<a href="{% url "users:logout" %}">
-					<span class="material-icons">logout</span>
-					<h2>Log Out</h2>
-				</a>
-			</div>
-		{% else %}
-			<div class="sidebarOption">
-				<a href="{% url "users:login" %}">
-					<span class="material-icons">login</span>
-					<h2>Log In</h2>
-				</a>
-			</div>
-
-			<div class="sidebarOption">
-				<a href="{% url "users:register" %}">
-					<span class="material-icons">app_registration</span>
-					<h2>Register</h2>
-				</a>
-			</div>
-		{% endif %}
-	</div>
-	 {% endcomment %}
-	<div class="body">
-		{% block content %}{% endblock content %}
-	</div>
-
-
-	<!-- widgets starts -->
-	{% comment %} <div class="widgets">
-		<div class="widgets__input">
-				<span class="material-icons widgets__searchIcon"> search </span>
-				<input type="text" placeholder="Search Twitter" />
-		</div> {% endcomment %}
-
-		{% comment %}
-		<div class="widgets__widgetContainer">
-				<h2>What's happening?</h2>
-				<blockquote class="twitter-tweet">
-						<p lang="en" dir="ltr">
-						Sunsets don&#39;t get much better than this one over
-						<a href="https://twitter.com/GrandTetonNPS?ref_src=twsrc%5Etfw">@GrandTetonNPS</a>.
-						<a href="https://twitter.com/hashtag/nature?src=hash&amp;ref_src=twsrc%5Etfw">#nature</a>
-						<a href="https://twitter.com/hashtag/sunset?src=hash&amp;ref_src=twsrc%5Etfw">#sunset</a>
-						<a href="http://t.co/YuKy2rcjyU">pic.twitter.com/YuKy2rcjyU</a>
-						</p>
-						&mdash; US Department of the Interior (@Interior)
-						<a href="https://twitter.com/Interior/status/463440424141459456?ref_src=twsrc%5Etfw">May 5, 2014</a>
-				</blockquote>
-				<script type="text/javascript" async src="{% static 'offlinecdn/widgets.js' %}" charset="utf-8"></script>
-				 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
-
-		</div>
-		{% endcomment %}
-	</div>	
-</body>
-</html>
-
-
-
-{% comment %} {% load static %}<!--
-	<!DOCTYPE html>
-	<html lang="en">
-
-	<head>
-		<meta charset="UTF-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="stylesheet" href="{% static "css/base.css" %}">
-		<title>{% block title %}{% endblock title %}</title>
-	</head>
-
-	<body>
-		<div id="header"><span class="logo"><a href="{% url "users:home" %}">Twitter</a></span>
-
-			{% if request.user.is_authenticated %}
-			<ul class="menu">
-				<li {% if section == "home" %}class="selected" {% endif %}><a href="{% url "users:home" %}">Twitter</a></li>
-				<li {% if section == "explore" %}class="selected" {% endif %}><a href="#">Explore</a></li>
-				<li {% if section == "notifications" %}class="selected" {% endif %}><a href="#">Notis</a></li>
-			</ul>
-			{% endif %}
-
-			<span class="user">
-				{% if request.user.is_authenticated %}
-					Hello {{ request.user.username }}
-					<a href="{% url "users:logout" %}">Log out</a>
-				{% else %}
-					<a href="{% url "users:login" %}">Log in</a>
 				{% endif %}
-			</span>
 
+				<div class="text-left col-sm-12 {% if user.is_authenticated %}col-md-11 col-lg-8 col-xl-5{% else %} col-md-12	col-lg-12 col-xl-12
+				{% endif %}"
+					  style="border-left: 1px solid grey; border-right: 1px solid grey;">
+					{% block content %}{% endblock content %}
+				</div>
+
+				
+				{% if user.is_authenticated %} 
+				<div class="col-sm-0 col-md-0 col-lg-3 col-xl-4 text-left bg-black h-100 flex-xl-shrink-1 flex-lg-shrink-1">
+					<h3>Column 3</h3>
+					<p>Lorem ipsum dolor..</p>
+				</div>
+				{% endif %}
+					
+			</div>
 		</div>
 		
-		{% if messages %}
-			<ul class="messages">
-				{% for message in messages %}
-					<li class="{{ message.tags }}">
-						{{ message|safe }}
-						<a href="#" class="close">x</a>
-					</li>
-				{% endfor %}
-			</ul>
-		{% endif %}
-			
-		<div id="content">{% block content %}{% endblock content %}</div>
+		<script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+		<script src="{% static 'js/js.cookie.min.js' %}"></script>
+		<script type="text/javascript" src="{% static "js/script.js" %}"></script>    
+		<script>
+			var csrftoken = Cookies.get('csrftoken');
+			function csrfSafeMethod(method) {
+				// these HTTP methods don't require CSRF protection
+				return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+			}
+			$.ajaxSetup({
+				beforeSend: function(xhr, settings) {
+					if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+						xhr.setRequestHeader("X-CSRFToken", csrftoken);
+					}
+				}
+			});
+			$(document).ready(function() {
+				{% block domready %}
+				{% endblock domready %}
+			});
+		</script>
+		<script src="https://kit.fontawesome.com/a548b28c9d.js" crossorigin="anonymous"></script>
 	</body>
 	</html>
---> {% endcomment %}
-
+	

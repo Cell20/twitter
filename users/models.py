@@ -6,11 +6,14 @@ class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     date_of_birth = models.DateField(blank=True, null=True)
     photo = models.ImageField(upload_to=f'data/profile_media/', blank=True)
+    bio = models.CharField(max_length=160, blank=True)
+    location = models.CharField(max_length=30, blank=True)
+    website = models.SlugField(max_length=100, blank=True)
 
     def __str__(self):
         return f'Profile for user {self.user.username}'
 
-class Contact(models.Model):
+class Contact(models.Model) :
     user_from = models.ForeignKey('auth.User', related_name='rel_from_set', on_delete=models.CASCADE)
     user_to = models.ForeignKey('auth.User', related_name='rel_to_set', on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True, db_index=True)
