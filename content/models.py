@@ -5,17 +5,9 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils import timezone
 from django.conf import settings
-from .fields import OrderField
 from django.db import models
 import calendar
 import math
-
-# Module            Tweet 1 (main tweet of the thread)
-#   Content 1           Tweet 2
-#   Content 2           Tweet 3
-
-# reach my state by python manage.py runserver go to http://127.0.0.1:8000/admin/content/tweet/
-# add image plus other options on Tweet model set required no or blank false
 
 class Tweet(models.Model):
     """related name allows as user.tweets"""
@@ -126,42 +118,3 @@ class Tweet(models.Model):
 
     def get_absolute_url(self):
         return reverse("content:tweet_detail", args=[self.user.username, self.id])
-    
-
-'''
-class Content(models.Model):
-    content_type = models.ForeignKey(ContentType, on_delete=models.DO_NOTHING, limit_choices_to={'model__in':('tweet', 'image', 'video')})
-    object_id = models.PositiveIntegerField()
-    item = GenericForeignKey('content_type', 'object_id')
-
-class ItemBase(models.Model):
-    owner = models.ForeignKey(User, related_name='%(class)s_related', on_delete=models.CASCADE)
-    created = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        abstract = True
-        ordering = ['-created']
-
-class Tweet(ItemBase):
-    tweet = models.TextField(max_length=50)
-
-class Image(ItemBase):
-    file = models.FileField(upload_to='images')
-
-class Video(ItemBase):
-    url = models.URLField()
-
-
-class Tweet(models.Model):
-    owner = models.ForeignKey(User, related_name='%(class)s_related', on_delete=models.CASCADE)
-    tweet = models.CharField(max_length=50)
-    created = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.tweet
-
-class ChildTweet(models.Model):
-    owner = models.ForeignKey(User, related_name='%(class)s_related', on_delete=models.DO_NOTHING)
-    tweet = models.CharField(max_length=50)
-    created = models.DateTimeField(auto_now_add=True)
-'''

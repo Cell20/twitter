@@ -10,10 +10,25 @@ from django.views.decorators.http import require_POST
 from common.decorators import ajax_required
 from content.forms import TweetCreateForm
 from content.models import Tweet
+from actions.models import Action
+from actions.utils import create_action
+
 
 @login_required
 def home(request):
     """home page displaying tweets from those you follow."""
+    # Display all actions by default
+    actions = Action.objects.filter(verb='tweeted')
+    # user.following.values_list('id') # <QuerySet [(11,)]>
+# user.following.values_list('id', flat=True) # <QuerySet [11]>
+    following_ids = request.user.following.values_list('id', flat=True)
+
+    if following_ids:
+        # If user is following others, retrieve only their actions
+        actions = actions.filter(user_id__in=following_ids)
+    # actions = actions[:10]
+    actions = actions.select_related('user', 'user__profile').prefetch_related('target')[:10]
+
     if request.method == 'POST':
         form = TweetCreateForm(request.POST)
         if form.is_valid():
@@ -29,7 +44,7 @@ def home(request):
     else:
         form = TweetCreateForm()
 
-    context = {'section': 'home','form': form}
+    context = {'section': 'home','form': form, 'actions': actions}
     return render(request, 'users/index.html', context)
 
 def user_login(request):
@@ -66,6 +81,7 @@ def register(request):
             new_user.set_password(user_form.cleaned_data['password'])
             new_user.save()
             Profile.objects.create(user=new_user)
+            create_action(new_user, 'has created an account')
             login(request, new_user)
             return render(request, 'users/home.html', {'new_user': new_user})
     else:
@@ -113,6 +129,7 @@ def user_follow(request):
                     user_from=request.user,
                     user_to=user
                 )
+                create_action(request.user, 'is following', user)
             else:
                 Contact.objects.filter(user_from=request.user, user_to=user).delete()
             return JsonResponse({'status':'ok'})

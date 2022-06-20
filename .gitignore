@@ -10,3 +10,4 @@ static/svg
 *.min.js
 .vscode/
 */settings.json
+static/fontawesome/

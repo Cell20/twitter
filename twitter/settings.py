@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     # My Apps
     'users.apps.UsersConfig',
     'content.apps.ContentConfig',
+    'actions.apps.ActionsConfig',
 
     # Default Django Apps
     'django.contrib.admin',

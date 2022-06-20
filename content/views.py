@@ -7,7 +7,7 @@ from django.contrib import messages
 from .forms import TweetCreateForm
 from .models import Tweet
 from django.http import HttpResponse
-
+from actions.utils import create_action
 
 
 @login_required
@@ -19,6 +19,7 @@ def tweet_create(request):
             tweet = Tweet.objects.create(user=request.user, body=cd['body'])
             # messages.success(request, 'Your tweet is published <a href="{% url "content:tweet_detail" %}">View</a>')
             tweet.save()
+            create_action(request.user, 'tweeted', tweet)
             return HttpResponse('Tweeted Successfully')
         else:
             return HttpResponse("Data isn't valid")
@@ -44,6 +45,7 @@ def tweet_like(request):
             tweet = Tweet.objects.get(id=tweet_id)
             if action == 'like':
                 tweet.users_like.add(request.user)
+                create_action(request.user, 'liked', tweet)
             else:
                 tweet.users_like.remove(request.user)
             return JsonResponse({'status':'ok'})

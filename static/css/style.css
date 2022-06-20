@@ -29,13 +29,18 @@
 .bg-black:hover {
   background-color: var(--dark);
 }
-/* .disabled {
-  cursor: default !important;
-} */
+
 .index-twt-btn {
   position: relative;
   bottom: -34px;
   right: -379px;
+}
+
+.follow-button {
+  position: absolute;
+  right: 1.5rem;
+  top: 11rem;
+  font-weight: 700;
 }
 
 .selected {
@@ -68,5 +73,3 @@
 .sign {
   color: var(--light);
 }
-
-

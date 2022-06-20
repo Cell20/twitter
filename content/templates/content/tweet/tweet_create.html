@@ -1,6 +1,8 @@
 
 {% load static %}
-	<img style="position: relative; top: 36px; left: -75px;" height="50px" width="50px" class="my-3 img-fluid rounded-circle" src="{% if user.profile.photo %}{{ user.profile.photo.url }}{% else %}{% static "images/default.png" %}{% endif %}">
+	<a href="{{ user.get_absolute_url }}">
+		<img style="position: relative; top: 36px; left: -75px;" height="50px" width="50px" class="my-3 img-fluid rounded-circle" src="{% if user.profile.photo %}{{ user.profile.photo.url }}{% else %}{% static "images/default.png" %}{% endif %}">
+	</a>
 	<style>
     input[id='id_image'] {
 			height: 20px;
@@ -28,14 +30,27 @@
 				top: 9%;
 			}
 		}
+		textarea {
+			overflow: auto;
+			/* resize: vertical; */
+			resize: none;
+		}
 
+		.index-twt-btn {
+			cursor: default;
+			position: absolute;
+			right: -60%;
+			bottom: 3%;
+			cursor: default;
+			right: 5%;
+		}
 	</style>
 	<form id="index-tweet-form" method="post" enctype="multipart/form-data">
 		<div class="form-floating" >
 			{% csrf_token %}
 			{{ form.as_p }}
 		</div>
-		<input type="submit" id="button" class="index-twt-btn btn btn-primary rounded-pill px-3" value="Tweet" disabled>
+		<input type="submit" id="button" class="align-right index-twt-btn btn btn-primary rounded-pill px-3" value="Tweet" disabled>
 	</form>
 
 	<script>

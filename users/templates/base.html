@@ -9,7 +9,20 @@
 	<link rel="stylesheet" href="{% static "offlinecdn/bootstrap.min.css" %}">
 	<link rel="stylesheet" href="{% static "offlinecdn/fonts.css" %}">
 	<link rel="stylesheet" href="{% static "offlinecdn/all.min.css" %}">
-	<link href="{% static "css/style.css" %}" rel="stylesheet">
+	<link rel="stylesheet" href="{% static "css/style.css" %}">	
+
+	<link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
+	<link rel="stylesheet" href="{% static 'fontawesome/css/fontawesome.min.css' %}">
+	<link rel="stylesheet" href="{% static 'fontawesome/css/brands.min.css' %}">
+	<link rel="stylesheet" href="{% static 'fontawesome/css/solid.min.css' %}">
+	<link rel="stylesheet" href="{% static 'fontawesome/css/regular.min.css' %}">
+
+	<script src="{% static 'fontawesome/js/all.min.js' %}"></script>
+	<script src="{% static 'fontawesome/js/brands.min.js' %}"></script>
+	<script src="{% static 'fontawesome/js/fontawesome.min.js' %}"></script>
+	<script src="{% static 'fontawesome/js/regular.min.js' %}"></script>
+	
+	<link rel="stylesheet" href="{% static 'offlinecdn/font-awesome.min.css' %}">
 	<title>{% block title %}{% endblock title %}</title>
 	
 	{% comment %} <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -18,7 +31,6 @@
 
 </head>
 <body style="background-color: rgb(0, 0, 0);">
-
 		<div class="container-fluid">
 			<div class="row">
 				{% comment %} phone < 500 < tablet < 1005 < laptop < 1282 < monitor
@@ -32,20 +44,17 @@
 				{% endif %}
 
 				<div class="text-left col-sm-12 {% if user.is_authenticated %}col-md-11 col-lg-8 col-xl-5{% else %} col-md-12	col-lg-12 col-xl-12
-				{% endif %}"
-					  style="border-left: 1px solid grey; border-right: 1px solid grey;">
+					{% endif %}" style="border-left: 1px solid grey; border-right: 1px solid grey;">
 					{% block content %}{% endblock content %}
 				</div>
-
-				
-				{% if user.is_authenticated %} 
-				<div class="col-sm-0 col-md-0 col-lg-3 col-xl-4 text-left bg-black h-100 flex-xl-shrink-1 flex-lg-shrink-1">
-					<h3>Column 3</h3>
-					<p>Lorem ipsum dolor..</p>
-				</div>
-				{% endif %}
-					
 			</div>
+			
+			{% if user.is_authenticated %} 
+			<div class="col-sm-0 col-md-0 col-lg-3 col-xl-4 text-left bg-black h-100 flex-xl-shrink-1 flex-lg-shrink-1">
+				<h3>Column 3</h3>
+				<p>Lorem ipsum dolor..</p>
+			</div>
+			{% endif %}
 		</div>
 		
 		<script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
@@ -69,7 +78,8 @@
 				{% endblock domready %}
 			});
 		</script>
-		<script src="https://kit.fontawesome.com/a548b28c9d.js" crossorigin="anonymous"></script>
+
+		{% comment %} <script src="https://kit.fontawesome.com/a548b28c9d.js" crossorigin="anonymous"></script> {% endcomment %}
 	</body>
 	</html>
 	

@@ -1,0 +1,113 @@
+{% load static %}
+  <hr class="bg-secondary">
+	<div class="individual-tweet d-flex flex-row">
+		
+		<a href="{{ user.get_absolute_url }}">
+  		<img height="40px" width="40px" class="my-3 img-fluid rounded-circle" src="{% if user.profile.photo %}{{ user.profile.photo.url }}{% else %}{% static "images/default.png" %}{% endif %}">
+		</a>
+			<div class="flex-fill">
+      	<div class="d-flex flex-row justify-content-between">
+          <a class="text-white text-decoration-none" href="{{ user.get_absolute_url }}">{{user.get_full_name}} <span class="text-dark">@{{ user.username }}</span> <span class="text-dark">{{ tweet.whenpublished }}</span></a>
+          <a class="text-dark text-decoration-none" href=""><i class="fas fa-lg fa-border-padding fa-solid fa-ellipsis"></i></a>
+        </div>
+        <p><a class="text-white text-decoration-none" href="{{ tweet.get_absolute_url }}">{{ tweet.body }}</a></p>
+     </div>
+  </div>
+
+
+  <script>
+    const menuBtn = document.querySelector('.menu-btn');
+    const hamburger = document.querySelector('.menu-btn__burger');
+    const nav = document.querySelector('.nav');
+    const menuNav = document.querySelector('.menu-nav');
+    const navItems = document.querySelectorAll('.menu-nav__item');
+
+    let showMenu = false;
+
+    menuBtn.addEventListener('click', toggleMenu);
+
+    function toggleMenu() {
+      if (!showMenu) {
+        hamburger.classList.add('open');
+
+        nav.classList.add('open');
+        menuNav.classList.add('open');
+        navItems.forEach(item => item.classList.add('open'));
+
+
+        showMenu = true;
+      }
+      else {
+        hamburger.classList.remove('open');
+        nav.classList.remove('open');
+        menuNav.classList.remove('open');
+        navItems.forEach(item => item.classList.remove('open'));
+
+
+        showMenu=false;
+      }
+    }
+  </script>
+
+{% comment %} 
+		{% with total_likes=tweet.users_like.count users_like=tweet.users_like.all %}
+			<div class="tweet-info">
+			<div>
+				<span class="count">
+					<span class="total">{{ total_likes }} </span>
+					like{{ total_likes|pluralize }}
+				</span>
+				<a class="like button" href="#" data-id="{{ tweet.id }}" data-action="
+					{% if request.user in users_like %}unlike{% else %}like{% endif %}">
+					
+					{% if request.user in users_like %}
+						&#10084;   <!-- Unlike -->
+					{% else %}
+						&hearts;    <!-- like -->
+					{% endif %}
+						
+				</a>
+			</div>
+		</div>
+	
+		{% endwith %}
+
+	 
+  $(".ellipsis").each(function() {
+    $(this).append("<span class='dots'></span>")
+  })
+
+  $(document).on("click", ".dots", function() {
+    console.log("ellipsis element is clicked");
+  })
+  p {
+    width: 150px;
+    border: 1px solid;
+    font: 13px Verdana;
+  }
+
+  .ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    position: relative;
+  }
+
+  span.dots {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 12px;
+    background: #ff000052;
+    z-index: 99;
+    cursor:pointer;
+  }
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <p class="ellipsis">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+  <p class="">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+  <p class="ellipsis">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+  <p class="">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+  -------ellipsis--------
+
+  {% endcomment %}  

@@ -1,0 +1,45 @@
+{% load static %}
+
+{% with user=action.user profile=actions.user.profile %}
+	<div class="action">
+		<div class="tweets">
+			{% comment %} {% if user.profile.photo %}
+				<a href="{{ user.get_absolute_url }}">	
+					 <img height="50px" width="50px" class="my-3 img-fluid rounded-circle" src="{% if user.profile.photo %}{{ user.profile.photo.url }}{% else %}{% static "images/default.png" %}{% endif %}"><br>
+					<img style="position: relative; top: 36px; left: -75px;" height="50px" width="50px" class="my-3 img-fluid rounded-circle" src="{% if user.profile.photo %}{{ user.profile.photo.url }}{% else %}{% static "images/default.png" %}{% endif %}">
+				</a>
+			{% endif %} {% endcomment %}
+
+			{% comment %} {% if action.target %} {% endcomment %}
+			
+			{% for action in actions %}
+				{% with tweet=action.target %}
+			
+							<hr>
+							{% include "content/tweet/individual-tweet.html" %}
+							<hr>
+				{% endwith %}
+			{% endfor %}
+			{% comment %} {% endif %} {% endcomment %}
+
+		</div>
+
+		{% comment %} <div class="info">
+			<p><span class="date">{{ action.created|timesince }} ago</span>
+			<br>
+			<a href="{{ user.get_absolute_url }}">
+				{{ user.get_full_name }}
+			</a>
+			{{ action.verb }}
+			
+			{% if action.target %}
+				{% with target=action.target %}
+					<a href="{{ target.get_absolute_url }}">{{ target }}</a>
+				{% endwith %}
+			{% endif %}
+				
+			</p>
+		</div> {% endcomment %}
+
+	</div>
+{% endwith %}
