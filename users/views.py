@@ -93,6 +93,7 @@ def user_list(request):
     users = User.objects.filter(is_active=True)
     return render(request, 'users/list.html', {'users': users})
 
+
 def user_detail(request, username):
     user = get_object_or_404(User, username=username, is_active=True)
     return render(request, 'users/detail.html', {'section': 'profile', 'user': user})

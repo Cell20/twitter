@@ -20,11 +20,11 @@
 
 		<p class="bio">{{ user.profile.bio }}</p>
 		<p>
-			<span class="text-dark"><i class="fa fa-location"></i> {{ user.profile.location }}</span>
+			<span class="text-dark"><i class="fa fa-map-marker-alt"></i> {{ user.profile.location }}</span>
 			<a href="{{ user.profile.website }}" class="ml-3"><i class="text-dark fa fa-link"></i> {{ user.profile.website }}</a><br>
 			<span class="text-dark"><i class="fa fa-cake"></i> Born {{ user.profile.date_of_birth.month|get_month }} {{ user.profile.date_of_birth.day }}, {{ user.profile.date_of_birth.year }}</span>
 			<span class="date-joined ml-3 text-dark">
-				<i class="fa fa-light fa-calendar"></i>
+				<i class="fa fa-light fa-calendar-alt"></i>
 				Joined {{ user.date_joined.month|get_month }} {{ user.date_joined.year }}</span>
 		</p>
 
@@ -48,12 +48,77 @@
 				{% include "content/tweet/individual-tweet.html" %}
 			<hr>
 			{% endfor %}
-
 	</div>
+
 {% endblock content %}
 
 {% block domready %}
-	console.log("jquery loaded");
+
+	$("a.like-button").click(function(e){
+		e.preventDefault();
+
+		var curTweet = $(this).closest(".like-button");
+
+		$.post('{% url "content:like" %}', {id: $(this).data('id'), action: $(this).data('action')},
+			function(data){
+
+				if (data['status'] == 'ok'){
+					var previous_action = $(curTweet).data('action');
+					var previous_likes = parseInt($(curTweet.children()).text(), 10);
+
+					$(curTweet).data('action', previous_action == 'like' ? 'unlike': 'like');
+
+					{% comment %} // toggle link text {% endcomment %}
+					var add_like = previous_likes + 1
+					var remove_like = previous_likes -1
+					//console.log(remove_like, previous_likes, add_like) // below line is removing no of likes
+					$(curTweet).html(previous_action == 'like' ? '<i class="fas fa-heart liked-color c-pointer"> ' + add_like + '</i>' : '<i class="fas fa-heart c-pointer">' + remove_like + '</i>').text();
+
+				{% comment %} // update total likes {% endcomment %}
+				{% comment %} //console.log('w/out parseInt ' +$(curTweet.children()).text())
+				//console.log('w/ parseInt ' +previous_likes) {% endcomment %}
+
+				{% comment %} $(curTweet.children()).text(previous_action == 'like' ? previous_likes + 1 : previous_likes -1); {% endcomment %}
+				{% comment %} //console.log(previous_likes) {% endcomment %}
+			}
+		});
+	});
+
+	{% comment %} $("a.like-button").click(function(e){
+		e.preventDefault();
+		var curTweet = $(this.closest('.like-button'));
+
+		$.post('{% url "content:like" %}', {id: $(this).data('id'), action: $(this).data('action')},
+			function(data){
+				if data['status'] == 'ok'){
+					var previous_action = $(curTweet).data('action');
+					$(curTweet.data())
+				}
+			}
+		)
+	}) {% endcomment %}
+
+
+	// close opened dropdowns of tweet on window click.
+	$(document).on('click', function(event) {
+		if (!$(event.target).closest('.ellipsis-btn').length) {
+			$('.ellipsis-content').removeClass("d-block");
+		}
+	});
+
+	// apply like, comment, retweet, share colors on click.
+	$(".fa-heart").click(function () {
+		$(this).toggleClass("liked-color");
+	});
+	$(".fa-retweet").click(function () {
+		$(this).toggleClass("retweeted-color");
+	});
+	$(".fa-comment").click(function () {
+		$(this).toggleClass("commented-color");
+	});
+	$(".fa-share-alt").click(function () {
+		$(this).toggleClass("shared-color");
+	});
 
 	$('a.follow').click(function(e){
 		e.preventDefault();

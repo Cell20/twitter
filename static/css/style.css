@@ -7,6 +7,48 @@
   --fa-primary-color: white;
 }
 
+/* bootstrap color codes */
+.fa-heart:hover {
+  color: #dc3545;
+}
+
+.fa-retweet:hover {
+  color: #1db340;
+}
+
+.fa-comment:hover {
+  color: #17a2b8;
+}
+
+.fa-share-alt:hover {
+  color: #17a2b8;
+}
+
+.liked-color {
+  color: red;
+}
+
+.retweeted-color {
+  color: #00ff3a;
+}
+
+.commented-color {
+  color: var(--blue);
+}
+.shared-color {
+  color: var(--blue);
+}
+/* bootstrap color codes */
+
+.c-pointer {
+  cursor: pointer;
+}
+.ellipsis-content {
+  font-size: 90%;
+  display: block;
+  position: absolute;
+  right: 15px;
+}
 .bg-black {
   background-color: var(--secondary);
 }
@@ -26,8 +68,8 @@
   }
 } /*style="border-bottom: 1px solid grey; height: 33%;"*/
 
-.bg-black:hover {
-  background-color: var(--dark);
+.bg-black-hover:hover {
+  background-color: #151414;
 }
 
 .index-twt-btn {

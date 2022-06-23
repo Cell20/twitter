@@ -2,112 +2,51 @@
   <hr class="bg-secondary">
 	<div class="individual-tweet d-flex flex-row">
 		
-		<a href="{{ user.get_absolute_url }}">
-  		<img height="40px" width="40px" class="my-3 img-fluid rounded-circle" src="{% if user.profile.photo %}{{ user.profile.photo.url }}{% else %}{% static "images/default.png" %}{% endif %}">
+		<a href="{{ tweet.user.get_absolute_url }}">
+  		<img height="40px" width="40px" class="my-3 img-fluid rounded-circle" src="{% if tweet.user.profile.photo %}{{ tweet.user.profile.photo.url }}{% else %}{% static "images/default.png" %}{% endif %}">
 		</a>
 			<div class="flex-fill">
       	<div class="d-flex flex-row justify-content-between">
-          <a class="text-white text-decoration-none" href="{{ user.get_absolute_url }}">{{user.get_full_name}} <span class="text-dark">@{{ user.username }}</span> <span class="text-dark">{{ tweet.whenpublished }}</span></a>
-          <a class="text-dark text-decoration-none" href=""><i class="fas fa-lg fa-border-padding fa-solid fa-ellipsis"></i></a>
+          <a class="text-white text-decoration-none" href="{{ tweet.user.get_absolute_url }}">{{tweet.user.get_full_name}} <span class="text-dark">@{{ tweet.user.username }}</span> <span class="text-dark">{{ tweet.whenpublished }}</span></a>
+          
+          <btn data-toggle="dropdown" data-target="#tweet-{{ tweet.id }}" class="c-pointer ellipsis-btn text-dark text-decoration-none" onclick="ellipsisFunction(id={{tweet.id}})"><i class="fas fa-lg fa-border-padding fa-solid fa-ellipsis"></i></btn>
+				
         </div>
         <p><a class="text-white text-decoration-none" href="{{ tweet.get_absolute_url }}">{{ tweet.body }}</a></p>
      </div>
-  </div>
+     <div id="tweet-{{ tweet.id }}" class="d-none ellipsis-content bg-black class-{{ tweet.id }} border border-dark">
+      <a class="bg-black-hover text-light text-decoration-none p-3 d-block" href="#">Not Interested in this Tweet</a>
+      <a class="bg-black-hover text-light text-decoration-none p-3 d-block" href="#">Unfollow @{{ tweet.user.username }}</a>
+      <a class="bg-black-hover text-light text-decoration-none p-3 d-block" href="#">Add/remove @{{ tweet.user.username }} from Lists</a>
+      <a class="bg-black-hover text-light text-decoration-none p-3 d-block" href="#">Mute @{{ tweet.user.username }}</a>
+      <a class="bg-black-hover text-light text-decoration-none p-3 d-block" href="#">Block @{{ tweet.user.username }}</a>
+      <a class="bg-black-hover text-light text-decoration-none p-3 d-block" href="#">Embed Tweet</a>
+    </div>
+ </div>
+ {% comment %} <div class="d-flex flex-row justify-content-around text-secondary">
+  <i class="fas fa-comment c-pointer"></i>
+  <i class="fas fa-retweet c-pointer"></i>
+  <i class="fas fa-heart c-pointer"></i>
+  <i class="fas fa-share-alt c-pointer"></i>
+ </div> {% endcomment %}
 
+{% with total_likes=tweet.users_like.count users_like=tweet.users_like.all %}
+	<div class="d-flex flex-row justify-content-around text-secondary">
 
-  <script>
-    const menuBtn = document.querySelector('.menu-btn');
-    const hamburger = document.querySelector('.menu-btn__burger');
-    const nav = document.querySelector('.nav');
-    const menuNav = document.querySelector('.menu-nav');
-    const navItems = document.querySelectorAll('.menu-nav__item');
+		<i class="fas fa-comment c-pointer"></i>
+		<i class="fas fa-retweet c-pointer"></i>
 
-    let showMenu = false;
+		<a href="#" class="like-button text-secondary" data-id="{{ tweet.id }}" data-action="{% if request.user in users_like %}unlike{% else %}like{% endif %}">
+      {% if request.user not in users_like %}
+			<i class="fas fa-heart c-pointer"> {{ total_likes }}</i>
+			{% comment %} Like {% endcomment %}
+			{% else %}
+			<i class="fas fa-heart liked-color c-pointer"> {{ total_likes }}</i>
+			{% comment %} Unlike {% endcomment %}
+			{% endif %}
+		</a>		
+		<i class="fas fa-share-alt c-pointer"></i>
+	</div>
+{% endwith %}
+  {% comment %} <style> #tweet-{{ tweet.id }} {display:none;} .class-{{ tweet.id }} {font-size: 90%; display: block; position: absolute; right: 15px;} </style> {% endcomment %}
 
-    menuBtn.addEventListener('click', toggleMenu);
-
-    function toggleMenu() {
-      if (!showMenu) {
-        hamburger.classList.add('open');
-
-        nav.classList.add('open');
-        menuNav.classList.add('open');
-        navItems.forEach(item => item.classList.add('open'));
-
-
-        showMenu = true;
-      }
-      else {
-        hamburger.classList.remove('open');
-        nav.classList.remove('open');
-        menuNav.classList.remove('open');
-        navItems.forEach(item => item.classList.remove('open'));
-
-
-        showMenu=false;
-      }
-    }
-  </script>
-
-{% comment %} 
-		{% with total_likes=tweet.users_like.count users_like=tweet.users_like.all %}
-			<div class="tweet-info">
-			<div>
-				<span class="count">
-					<span class="total">{{ total_likes }} </span>
-					like{{ total_likes|pluralize }}
-				</span>
-				<a class="like button" href="#" data-id="{{ tweet.id }}" data-action="
-					{% if request.user in users_like %}unlike{% else %}like{% endif %}">
-					
-					{% if request.user in users_like %}
-						&#10084;   <!-- Unlike -->
-					{% else %}
-						&hearts;    <!-- like -->
-					{% endif %}
-						
-				</a>
-			</div>
-		</div>
-	
-		{% endwith %}
-
-	 
-  $(".ellipsis").each(function() {
-    $(this).append("<span class='dots'></span>")
-  })
-
-  $(document).on("click", ".dots", function() {
-    console.log("ellipsis element is clicked");
-  })
-  p {
-    width: 150px;
-    border: 1px solid;
-    font: 13px Verdana;
-  }
-
-  .ellipsis {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    position: relative;
-  }
-
-  span.dots {
-    position: absolute;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    width: 12px;
-    background: #ff000052;
-    z-index: 99;
-    cursor:pointer;
-  }
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-  <p class="ellipsis">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-  <p class="">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-  <p class="ellipsis">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-  <p class="">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-  -------ellipsis--------
-
-  {% endcomment %}  
