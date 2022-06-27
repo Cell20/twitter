@@ -10,6 +10,15 @@ class UserRegistrationForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('username', 'first_name', 'last_name', 'email')
+        labels = {
+            'username': ('*Username: '),
+        }
+        error_messages = {
+            'username': {
+                'text': (" Username must be unique. Letters, digits and @/./+/-/_ are allowed."),
+
+            },
+        }
 
     def clean_password2(self):
         cd = self.cleaned_data

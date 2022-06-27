@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Compose Tweet{% endblock title %}
+
+{% block content %}
+
+	<div class="row" id="central-top" style="border-bottom: 1px solid grey;">
+		<div class="tweetBox">
+			{% include "content/tweet/tweet_create.html" %}
+		</div>
+	</div>
+
+	<style>
+		.sm-bottom-nav, .tweet-feather, .sm-top-nav a img, .sm-top-nav span {
+			display: none !important;
+		}
+		.back-arrow {display: block !important;}
+	</style>
+{% endblock content %}
+
+{% block domready %}
+	$('#id_body').on('input', function() {
+		this.style.height = 'auto';
+		this.style.height = (this.scrollHeight) + 'px';
+	});
+	// disabled
+	var button = document.getElementById("button");
+	var textarea = document.getElementById("id_body");
+	button.style.cursor = "default";
+	$(button).prop('disabled', true);
+
+	textarea.addEventListener('keyup', function() {
+		// alert(button.disabled + ' ' + this)
+		button.disabled = !this.value; 
+	// btn is disabled LHS=true; user types in RHS=true; btn.disabled value is set to not true/ !true/ or false;
+			if(!this.value){
+				$("#button").css("cursor", "default");
+			} else if (this.value) {
+				$("#button").css("cursor", "pointer");
+			}
+		
+	});
+{% endblock domready %}

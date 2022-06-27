@@ -1,19 +1,57 @@
 {% load static %}
-				<img class="my-3 mx-3" width="30px" height="30px" src="{% static 'svg/twitter-blue.svg' %}" alt="">
-				<div class="nav list-group-flush align-items-center">
-					<a class="list-group-item list-group-item-action align-items-center text-white bg-black lead {% if section == "home" %}selected{% endif %}" href="{% url 'users:home' %}"><i class="fas fa-lg fa-light fa-home"></i> <span class="hidden-sm-md">Home</span></a>
-					<a class="list-group-item list-group-item-action align-items-center text-white bg-black lead {% if section == "explore" %}selected{% endif %}" href=""><i class="fas fa-lg fa-border-padding fa-light fa-hashtag"></i> <span class="hidden-sm-md">Explore</span></a>
-					<a class="list-group-item list-group-item-action align-items-center text-white bg-black lead {% if section == "notifications" %}selected{% endif %}" href=""><i class="fas fa-lg fa-border-padding fa-light fa-bell"></i> <span class="hidden-sm-md">Notifications</span><span class="ml-2 badge badge-primary badge-pill">3</span></a>
-					<a class="list-group-item list-group-item-action align-items-center text-white bg-black lead {% if section == "messages" %}selected{% endif %}" href=""><i class="fas fa-lg fa-border-padding fa-light fa-envelope"></i> <span class="hidden-sm-md">Messages</span></a>
-					<a class="list-group-item list-group-item-action align-items-center text-white bg-black lead {% if section == "bookmarks" %}selected{% endif %}" href=""><i class="fas fa-lg fa-border-padding fa-light fa-bookmark"></i> <span class="hidden-sm-md">Bookmarks</span></a>
-					<a class="list-group-item list-group-item-action align-items-center text-white bg-black lead {% if section == "lists" %}selected{% endif %}" href=""><i class="fas fa-lg fa-border-padding fa-list"></i> <span class="hidden-sm-md">Lists</span></a>
-					<a class="list-group-item list-group-item-action align-items-center text-white bg-black lead {% if section == "profile" %}selected{% endif %}" href="{{ user.get_absolute_url }}"><i class="fas fa-lg fa-border-padding fa-solid fa-user"></i> <span class="hidden-sm-md">Profile</span></a>
-					<a class="list-group-item list-group-item-action align-items-center text-white bg-black lead {% if section == "more" %}selected{% endif %}" href=""><i class="fas fa-lg fa-border-padding fa-more"></i> <span class="hidden-sm-md">More</span></a>
-				</div>
-				<style>
-					@media all and (max-width: 1200px) {
-						.hidden-sm-md {
-							display: none;
-						}
-					}
-				</style>
+
+<!-- Navbar on large screens (Hidden on small) -->
+<div class="lg-nav px-3 col-sm-0 col-md-1 col-lg-1 col-xl-3 flex-xl-shrink-1">
+	<img class=" my-3 mx-3" width="30px" height="30px" src="{% static 'svg/twitter-blue.svg' %}" alt="">
+	<div class="nav list-group-flush">
+		<a class="rounded-pill list-group-item list-group-item-action align-items-center bg-black-hover bg-black lead {% if section == "home" %}selected{% endif %}" href="{% url 'users:home' %}"><i class="fa nav-icons fas fa-lg fa-home"></i> <span class="hidden-sm-md text-light">Home</span></a>
+		<a class="rounded-pill list-group-item list-group-item-action align-items-center bg-black-hover bg-black lead {% if section == "explore" %}selected{% endif %}" href=""><i class="fa nav-icons fas fa-2x fa-hashtag"></i> <span class="hidden-sm-md text-light">Explore</span></a>
+		<a class="rounded-pill list-group-item list-group-item-action align-items-center bg-black-hover bg-black lead {% if section == "notifications" %}selected{% endif %}" href=""><i class="fa nav-icons fas fa-lg fa-bell"></i> <span class="hidden-sm-md text-light">Notifications</span></a>
+		<a class="rounded-pill list-group-item list-group-item-action align-items-center bg-black-hover bg-black lead {% if section == "messages" %}selected{% endif %}" href=""><i class="fa nav-icons fas fa-lg fa-envelope"></i> <span class="hidden-sm-md text-light">Messages</span></a>
+		<a class="rounded-pill list-group-item list-group-item-action align-items-center bg-black-hover bg-black lead {% if section == "bookmarks" %}selected{% endif %}" href=""><i class="fa nav-icons fas fa-lg fa-bookmark"></i> <span class="hidden-sm-md text-light">Bookmarks</span></a>
+		<a class="rounded-pill list-group-item list-group-item-action align-items-center bg-black-hover bg-black lead {% if section == "lists" %}selected{% endif %}" href=""><i class="fa nav-icons fas fa-lg fa-list"></i> <span class="hidden-sm-md text-light">Lists</span></a>
+		<a class="rounded-pill list-group-item list-group-item-action align-items-center bg-black-hover bg-black lead {% if section == "profile" %}selected{% endif %}" href="{{ user.get_absolute_url }}"><i class="fa nav-icons fas fa-lg fa-user"></i> <span class="hidden-sm-md text-light">Profile</span></a>
+		<a class="rounded-pill list-group-item list-group-item-action align-items-center bg-black-hover bg-black lead {% if section == "more" %}selected{% endif %}" href=""><i class="fa nav-icons fas fa-lg fa-more"></i> <span class="hidden-sm-md text-light">More</span></a>
+	</div>
+</div>
+
+<!-- Navbar on small screens (Hidden on large screens) -->
+<div class="sm-nav">
+	<div style="border-bottom: 1px solid #6c757d;" class="sm-top-nav ml-3 d-flex flex-row justify-content-start w-100 fixed-top py-2 bg-black">
+		
+		<a class="text-light back-arrow d-none" href="{% url "users:home" %}"><i class="fas fa-arrow-left"></i></a>
+		
+		<a class="sm-home-a" href="{{ request.user.get_absolute_url }}"><img height="40px" width="40px" class="img-fluid rounded-circle" src="{% if user.profile.photo %}{{ user.profile.photo.url }}{% else %}{% static "images/default.png" %}{% endif %}">
+		</a>
+		<a href="{% url "users:home" %}"><span class="ml-2 mt-2 text-light font-weight-bold">Home</span></a>
+		<a href="{% url "users:logout" %}" class="ml-5 pl-5 text-light text-decoration-none">Log out</a>
+		
+	</div>
+
+	<div style="border-top: 1px solid #6c757d;" class="sm-bottom-nav d-flex flex-row justify-content-around w-100 fixed-bottom py-2 bg-black">
+		<a class="text-secondary text-light {% if section == "home" %}selected{% endif %}" href="{% url 'users:home' %}"><i class="nav-icons fa-lg fa fas fa-home"></i></a>
+		<a class="text-secondary {% if section == "explore" %}selected{% endif %}" href="#"><i class="nav-icons fa-lg fa fas fa-search"></i></a>
+		<a class="text-secondary {% if section == "notifications" %}selected{% endif %}" href="#"><i class="nav-icons fa-lg fa fas fa-bell"></i></a>
+		<a class="text-secondary {% if section == "messages" %}selected{% endif %}" href="#"><i class="nav-icons fa-lg fa fas fa-envelope"></i></a>
+	</div>
+
+	<a class="tweet-feather" href="{% url "content:compose_tweet" %}">
+		<div class="tweet-circle rounded-circle bg-primary text-light navbar-text" style="
+		position: fixed; bottom: 60px; right: 30px; width: 50px; height: 50px; z-index: 1; text-align:center;">
+		<span style="vertical-align: middle;"><i class="fas fa-plus fa-lg"></i><i class="fas fa-feather"></i></span>
+		</div>
+	</a>
+
+	<style>
+		#button {position: unset;}
+	</style>
+
+</div>
+
+{% comment %} 
+sm < 500
+md < 1005
+lg < 1282
+xl > 1282
+phone < 500 < tablet < 1005 < laptop < 1282 
+{% endcomment %}

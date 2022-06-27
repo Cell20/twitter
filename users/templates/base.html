@@ -27,19 +27,17 @@
 				3, 5, 4   col-sm-9 col-md-6 col-lg-8 col-xl-10
 				sm  < 500 <   md   < 1005 <   lg   < 1282 <   xl {% endcomment %}
 				{% if user.is_authenticated %}
-				<div class="px-3 col-sm-0 col-md-1 col-lg-1 col-xl-3 text-left flex-xl-shrink-1">
 					{% include "users/nav.html" %}
-				</div>
 				{% endif %}
 
-				<div class="text-left col-sm-12 {% if user.is_authenticated %}col-md-11 col-lg-8 col-xl-5{% else %} col-md-12	col-lg-12 col-xl-12
-					{% endif %}" style="border-left: 1px solid grey; border-right: 1px solid grey;">
+				<div class="main text-left col-sm-12 {% if user.is_authenticated %}col-md-11 col-lg-8 col-xl-5{% else %} col-md-12	col-lg-12 col-xl-12
+					{% endif %}">
 					{% block content %}{% endblock content %}
 				</div>
 			</div>
 			
 			{% if user.is_authenticated %} 
-			<div class="col-sm-0 col-md-0 col-lg-3 col-xl-4 text-left bg-black h-100 flex-xl-shrink-1 flex-lg-shrink-1">
+			<div class="d-none col-sm-0 col-md-0 col-lg-3 col-xl-4 text-left bg-black h-100 flex-xl-shrink-1 flex-lg-shrink-1">
 				<h3>Column 3</h3>
 				<p>Lorem ipsum dolor..</p>
 			</div>
@@ -63,6 +61,12 @@
 				}
 			});
 			$(document).ready(function() {
+				//alert($(document).width())
+					$(document).on('click', function(event) {
+		if (!$(event.target).closest('.ellipsis-btn').length) {
+			$('.ellipsis-content').removeClass("d-block");
+		}
+	});
 				{% block domready %}
 				{% endblock domready %}
 			});

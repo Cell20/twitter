@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login
 from .forms import LoginForm, UserRegistrationForm, UserEditForm, ProfileEditForm
@@ -17,6 +17,7 @@ from actions.utils import create_action
 @login_required
 def home(request):
     """home page displaying tweets from those you follow."""
+    tweets = Tweet.objects.all()
     # Display all actions by default
     actions = Action.objects.filter(verb='tweeted')
     # user.following.values_list('id') # <QuerySet [(11,)]>
@@ -44,7 +45,7 @@ def home(request):
     else:
         form = TweetCreateForm()
 
-    context = {'section': 'home','form': form, 'actions': actions}
+    context = {'section': 'home','form': form, 'actions': actions, 'tweets': tweets}
     return render(request, 'users/index.html', context)
 
 def user_login(request):
@@ -73,20 +74,20 @@ def user_login(request):
 
 def register(request):
     if request.method == 'POST':
-        user_form = UserRegistrationForm(request.POST)
-        if user_form.is_valid():
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
             # Create a new user object but avoid saving it yet
-            new_user = user_form.save(commit=False)
+            user = form.save(commit=False)
             # Set the chosen password
-            new_user.set_password(user_form.cleaned_data['password'])
-            new_user.save()
-            Profile.objects.create(user=new_user)
-            create_action(new_user, 'has created an account')
-            login(request, new_user)
-            return render(request, 'users/home.html', {'new_user': new_user})
+            user.set_password(form.cleaned_data['password'])
+            user.save()
+            Profile.objects.create(user=user)
+            create_action(user, 'has created an account')
+            login(request, user, 'users.authentication.EmailAuthBackend')
+            return redirect('users:home')
     else:
-        user_form = UserRegistrationForm()
-    return render(request, 'users/register.html', {'user_form': user_form})
+        form = UserRegistrationForm()
+    return render(request, 'users/register.html', {'form': form})
 
 
 def user_list(request):

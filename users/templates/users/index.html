@@ -4,7 +4,7 @@
 
 {% block content %}
 
-	<div class="row" id="central-top" style="border-bottom: 1px solid grey;">
+	<div class="row hidden-sm" id="central-top" style="border-bottom: 1px solid grey;">
 		<h5 class="text-white font-weight-bolder mx-3">Home</h5><br>
 		<div class="tweetBox">
 			{% include "content/tweet/tweet_create.html" %}
@@ -16,9 +16,49 @@
 		{% endfor %}
 	</div>
 
+	<div class="py-4 pb-5 mr-3" style="position: absolute;">
+		
+
+		{% for tweet in tweets|latest %}
+			{% include "content/tweet/individual-tweet.html" %}
+		{% endfor %}
+			
+			
+	</div>
 {% endblock content %}
 
-{% block domready %}
+{% block domready %}\
+
+$("a.like-button").click(function(e){
+	e.preventDefault();
+
+	var curTweet = $(this).closest(".like-button");
+
+	$.post('{% url "content:like" %}', {id: $(this).data('id'), action: $(this).data('action')},
+		function(data){
+
+			if (data['status'] == 'ok'){
+				var previous_action = $(curTweet).data('action');
+				var previous_likes = parseInt($(curTweet.children()).text(), 10);
+
+				$(curTweet).data('action', previous_action == 'like' ? 'unlike': 'like');
+
+				{% comment %} // toggle link text {% endcomment %}
+				var add_like = previous_likes + 1
+				var remove_like = previous_likes -1
+				//console.log(remove_like, previous_likes, add_like) // below line is removing no of likes
+				$(curTweet).html(previous_action == 'like' ? '<i class="fas fa-heart liked-color c-pointer"> ' + add_like + '</i>' : '<i class="fas fa-heart c-pointer">' + remove_like + '</i>').text();
+
+			{% comment %} // update total likes {% endcomment %}
+			{% comment %} //console.log('w/out parseInt ' +$(curTweet.children()).text())
+			//console.log('w/ parseInt ' +previous_likes) {% endcomment %}
+
+			{% comment %} $(curTweet.children()).text(previous_action == 'like' ? previous_likes + 1 : previous_likes -1); {% endcomment %}
+			{% comment %} //console.log(previous_likes) {% endcomment %}
+		}
+	});
+});
+
 	$('#id_body').on('input', function() {
 		this.style.height = 'auto';
 		this.style.height = (this.scrollHeight) + 'px';

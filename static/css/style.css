@@ -1,10 +1,10 @@
 :root {
   --blue: #1e90ff;
-  --primary: white;
-  --secondary: black;
+  --primary-color: black;
+  --secondary-color: white;
   --dark: #2c2f3175;
   --light: rgb(231, 233, 234);
-  --fa-primary-color: white;
+  --b-secondary: #6c757d;
 }
 
 /* bootstrap color codes */
@@ -50,16 +50,40 @@
   right: 15px;
 }
 .bg-black {
-  background-color: var(--secondary);
+  background-color: var(--primary-color);
 }
-@media screen and (min-width: 500px) {
-  #central-top {
-    height: 79%;
+
+/* applies only if screen size is less than 1200px */
+@media all and (max-width: 1200px) {
+  .hidden-sm-md {
+    display: none;
   }
 }
 @media screen and (min-width: 768px) {
+  /* applies only if screen size is greater than 500px */
+  /* #central-top {
+    height: 79%;
+  } */
+  .main {
+    border-left: 1px solid var(--b-secondary);
+    border-right: 1px solid var(--b-secondary);
+  }
+}
+  .sm-nav {
+    display: none;
+  }
   #central-top {
-    height: 23%;
+    height: 40%;
+  }
+@media screen and (max-width: 768px) {
+  .lg-nav {
+    display: none !important;
+  }
+  .hidden-sm {
+    display: none;
+  }
+    .sm-nav {
+    display: block !important;
   }
 }
 @media screen and (min-width: 1200px) {
@@ -72,6 +96,22 @@
   background-color: #151414;
 }
 
+.nav a:hover {
+  background-color: #151414;
+  color: var(--secondary-color);
+  font-weight: 600;
+}
+/* .nav-icons { 
+  -webkit-text-stroke: 1px var(--secondary-color);
+  color: var(--primary-color) !important;
+} */
+
+/* div.nav a {
+  text-align: center;
+}
+.list-group-item-action {
+  text-align: center;
+} */
 .index-twt-btn {
   position: relative;
   bottom: -34px;
@@ -81,24 +121,16 @@
 .follow-button {
   position: absolute;
   right: 1.5rem;
-  top: 11rem;
-  font-weight: 700;
+  top: 8rem;
 }
 
 .selected {
   font-weight: 1000px;
-  color: var(--primary);
+  color: var(--secondary-color);
 }
 
-.fa-home,
-.fa-hashtag,
-.fa-bell,
-.fa-envelope,
-.fa-bookmark,
-.fa-list,
-.fa-profile,
-.fa-more {
-  color: var(--primary);
+.nav-icons:hover {
+  color: var(--secondary-color);
 }
 
 /* .form-signin {

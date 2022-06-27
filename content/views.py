@@ -20,14 +20,14 @@ def tweet_create(request):
             # messages.success(request, 'Your tweet is published <a href="{% url "content:tweet_detail" %}">View</a>')
             tweet.save()
             create_action(request.user, 'tweeted', tweet)
-            return HttpResponse('Tweeted Successfully')
+            return redirect('users:home')
         else:
-            return HttpResponse("Data isn't valid")
+            return redirect('content:compose_tweet')
     else:
         form = TweetCreateForm()
 
     context = {'form': form}
-    return render(request, 'content/tweet/tweet_create.html', context)
+    return render(request, 'content/tweet/compose_tweet.html', context)
 
 
 def tweet_detail(request, username, id):

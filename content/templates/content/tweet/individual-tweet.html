@@ -7,9 +7,9 @@
 		</a>
 			<div class="flex-fill">
       	<div class="d-flex flex-row justify-content-between">
-          <a class="text-white text-decoration-none" href="{{ tweet.user.get_absolute_url }}">{{tweet.user.get_full_name}} <span class="text-dark">@{{ tweet.user.username }}</span> <span class="text-dark">{{ tweet.whenpublished }}</span></a>
+          <a class="text-white text-decoration-none font-weight-bold" href="{{ tweet.user.get_absolute_url }}">{{tweet.user.get_full_name}} <span class="text-secondary font-weight-normal">@{{ tweet.user.username }}</span> <span class="text-secondary font-weight-normal">{{ tweet.whenpublished }}</span></a>
           
-          <btn data-toggle="dropdown" data-target="#tweet-{{ tweet.id }}" class="c-pointer ellipsis-btn text-dark text-decoration-none" onclick="ellipsisFunction(id={{tweet.id}})"><i class="fas fa-lg fa-border-padding fa-solid fa-ellipsis"></i></btn>
+          <btn data-toggle="dropdown" data-target="#tweet-{{ tweet.id }}" class="c-pointer ellipsis-btn text-secondary text-decoration-none" onclick="ellipsisFunction(id={{tweet.id}})"><i class="fas fa-lg fa-border-padding fa-solid fa-ellipsis"></i></btn>
 				
         </div>
         <p><a class="text-white text-decoration-none" href="{{ tweet.get_absolute_url }}">{{ tweet.body }}</a></p>

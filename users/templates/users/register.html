@@ -1,13 +1,46 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block title %}Create an account{% endblock title %}
 
 {% block content %}
+{% comment %} <div class="text-secondary">
 	<h1>Create an account</h1>
 	<p>Please, sign up using the following form:</p>
 	<form method="post">
 		{{ user_form.as_p }}
 		{% csrf_token %}
-		<p><input type="submit" value="Create my account"></p>
+		<p><input class="btn btn-lg btn-light rounded-pill" type="submit" value="Create my account"></p>
 	</form>
+</div>
+<p>Already have an account? <a href="{% url "users:login" %}">Log in</a></p> {% endcomment %}
+
+
+<!--# TO DO; FIX UP THE FIELDS SHOWN IN TWITTER REGISTER -->
+<div class="text-center form-signin m-auto" style="color: #71767B">
+	<div class="login-template">
+
+		<img class="mb-4" src="{% static 'svg/twitter-blue.svg' %}" alt="" width="30" height="30">
+		<h1 class="h3 mb-3 mt-4 fw-bold sign px-5">Sign up to Twitter</h1>
+
+		<form method="post" class="my-4">
+
+			<div class="form-floating w-100">
+				{% csrf_token %}
+				{{ form.as_p }}
+			</div>
+			<p class="btn btn-lg btn-light rounded-pill px-5 mt-4">
+				<input type="submit" class="btn btn-light rounded-pill px-5 py-0" value="Sign up"/>
+			</p>
+
+	</form>
+	<style>
+		span.helptext {display: none;}
+	</style>
+	</div>		
+		<p class="no-acc">Alreay have an account? <a style="color: #1d9bf0" href="{% url "users:login" %}">Sign in</a></p>
+</div>
+
+
+
+
 {% endblock content %}
